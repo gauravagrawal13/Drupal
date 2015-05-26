@@ -1,0 +1,4 @@
+name = File validation
+description = Prevents uploading of existing file.
+core = 7.x
+package = File Exist
