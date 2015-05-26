@@ -1,0 +1,14 @@
+<?php
+
+/**
+* Implements hook_file_validate()
+*/
+
+function file_exist_file_validate($file) {
+  $filename = $file->filename;
+  $errors = array();
+  if (file_exists('public://' . $filename)) { 
+    $errors[] = t("File already exist on the server!");
+  }
+  return $errors;
+}
