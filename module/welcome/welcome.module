@@ -1,0 +1,49 @@
+<?php
+
+/**
+ *
+ *@file
+ *Module file for welcome module
+ */
+ 
+/**
+ *Implements hook_menu().
+ */ 
+ 
+function welcome_menu(){
+	$items = array();
+	//Welcome message setting for loggedin user
+	$items['admin/config/welcome'] = array(
+	'title' => 'Welcome message configure',
+	'page callback' => drupal_get_form,
+	'page arguments' => array('welcome_welcome_form'),
+	'access arguments' => array('administer user'),
+	'type' => MENU_NORMAL_ITEM,
+	);
+	
+	return $items;
+}
+
+/**
+ *Implements hook_form().
+ */
+ 
+function welcome_welcome_form($form, &$form_state){
+	$form['welcome_message'] = array(
+	'#type' => 'textarea',
+	'#title' => t('Welcome Message'),
+	'#rows' => 5,
+	'#required' => TRUE,
+	'#default_value' => variable_get('welcome_message'),
+	);
+	
+	return system_settings_form($form);
+}
+/**
+ *Implements hook_user_login().
+ *Welcome message for loggedin users.
+ */
+
+function welcome_user_login(&$edit, $account){
+	drupal_set_message(check_plain(t(variable_get('welcome_message'))));
+}
