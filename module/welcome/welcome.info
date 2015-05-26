@@ -1,0 +1,4 @@
+name = Welcome form example
+description = Example to show and configure welcome message.
+core = 7.x
+package = Welcome
