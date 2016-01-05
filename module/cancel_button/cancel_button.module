@@ -1,0 +1,33 @@
+<?php
+
+/**
+ * Custom cancel button callback.
+ */
+function cancel_button_form_cancel($form, &$form_state) {
+  $fallback_destinaton = '<front>';
+  // If edit, use the node itself as fallback.
+  if (!empty($form['#node'])) {
+    if (!empty($form['#node']->nid)) {
+      $nid = $form['#node']->nid;
+      $node = node_load($nid);
+      $node_uri = node_uri($node);
+      $fallback_destinaton = $node_uri['path'];
+    }
+  }
+  // Go to destination or fallback.
+  $url = isset($_GET['destination']) ? $_GET['destination'] : $fallback_destinaton;
+  drupal_goto($url);
+}
+function cancel_button_form_alter(&$form, &$form_state, $form_id) {
+  if (stristr($form_id, '_node_form') !== FALSE) {
+$form['actions']['cancel'] = array(
+    '#type' => 'submit',
+    '#value' => t('Cancel'),
+    '#access' => TRUE,
+    '#weight' => 999,
+    '#submit' => array('cancel_button_form_cancel', 'node_form_submit_build_node'),
+    '#limit_validation_errors' => array(),
+    '#attributes' => array('class' => array('btn-cancel')),
+  );
+  }
+}
