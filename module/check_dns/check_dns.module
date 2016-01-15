@@ -18,7 +18,7 @@ function check_dns_user_register_validate(&$form, &$form_state) {
   if (!empty($errors['mail'])) {
     return;
   }
-  $default_message = t('There is no DNS record for your email Id.');
+  $default_message = t('Your email domain is not recognised. Please enter a valid email id.');
   $mail = explode('@', $form_state['values']['mail']);
   
   $result = dns_get_record(end($mail),DNS_ALL);
