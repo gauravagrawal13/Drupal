@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * @file
+ */
+
+/**
  * Implements hook_form_form_id_form_alter().
  */
 function check_dns_form_user_register_form_alter(&$form, &$form_state, $form_id) {
@@ -20,13 +24,14 @@ function check_dns_user_register_validate(&$form, &$form_state) {
   }
   $default_message = t('Your email domain is not recognised. Please enter a valid email id.');
   $mail = explode('@', $form_state['values']['mail']);
-  
-  $result = dns_get_record(end($mail),DNS_ALL);
-  
-  if(empty($result)){
-	form_set_error('account', $default_message);
-  }else{
-  	return;
+
+  $result = dns_get_record(end($mail), DNS_ALL);
+
+  if (empty($result)) {
+    form_set_error('account', $default_message);
   }
-  
+  else {
+    return;
+  }
+
 }
