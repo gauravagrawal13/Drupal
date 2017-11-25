@@ -1,4 +1,4 @@
 name = Check DNS
-description = Checks if domain has DNS Record before user registration.
+description = Checks if email domain has DNS Record before user registration.
 core = 7.x
 package = Custom

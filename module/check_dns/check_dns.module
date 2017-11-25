@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * Prevents user registration with invalid email domain.
  */
 
 /**
@@ -12,7 +13,7 @@ function check_dns_form_user_register_form_alter(&$form, &$form_state, $form_id)
 }
 
 /**
- * Custom validation function.
+ * Custom validation function for user_register_form().
  *
  * Checks if the domain in the email address is on a list of allowed domains.
  */
@@ -22,13 +23,16 @@ function check_dns_user_register_validate(&$form, &$form_state) {
   if (!empty($errors['mail'])) {
     return;
   }
-  $default_message = t('Your email domain is not recognised. Please enter a valid email id.');
-  $mail = explode('@', $form_state['values']['mail']);
 
+  // Get the email.
+  $mail = explode('@', check_plain($form_state['values']['mail']));
+  // Fetch DNS Resource Records associated with a hostname.
   $result = dns_get_record(end($mail), DNS_ALL);
 
-  if (empty($result)) {
-    form_set_error('account', $default_message);
+  if ($result || empty($result)) {
+    // If no record is found.
+    $error_message = t('Your email domain is not recognised. Please enter a valid email id.');
+    form_set_error('account', $error_message);
   }
   else {
     return;
