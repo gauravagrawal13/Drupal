@@ -1,3 +1,4 @@
 name = Cancel Button
+description = Provides a cancel button on node forms.
 package = Custom
 core = 7.x
